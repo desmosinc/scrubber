@@ -5,8 +5,7 @@ Simple, attractive html+js scrubber control
 
 Tested in recent versions of Firefox, Chrome, Safari, and IE9+. Works with mouse events and touch events.
 
-Example Usage:
-
+###Example Usage:
 ```javascript
 // Make a new scrubber
 var scrubber = new ScrubberView();
