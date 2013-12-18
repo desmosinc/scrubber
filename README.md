@@ -1,7 +1,7 @@
 scrubber
 ========
 
-Simple, attractive html+js scrubber control
+Simple, attractive html+js scrubber control.
 
 Tested in recent versions of Firefox, Chrome, Safari, and IE9+. Works with mouse events and touch events.
 
