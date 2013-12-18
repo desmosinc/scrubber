@@ -31,7 +31,8 @@ scrubber.value(); // 0.5
 // Setters are chainable
 scrubber.min(-10).max(10).value(3);
 
-// jQuery isn't required, but you use it to append scrubbers after you've created them if you want
+// jQuery isn't required, but you can use it to append scrubbers after you've
+// created them if you want
 var scrubber2 = new ScrubberView();
 $('.my-container').append(scrubber2.elt);
 
