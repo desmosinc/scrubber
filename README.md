@@ -38,3 +38,5 @@ $('.my-container').append(scrubber2.elt);
 // By default, scrubbers are 200px wide. You can use css to change their size
 scrubber2.style.width = "300px";
 ```
+
+Live example at http://jsbin.com/iyexuVAR/1/
