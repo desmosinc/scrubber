@@ -2,7 +2,7 @@ function ScrubberView() {
   this.makeAccessors();
   this.createDOM();
   this.attachListeners();
-  this.onValueUpdated = function () {};
+  this.onValueChanged = function () {};
 }
 
 ScrubberView.prototype.resize = function () {
@@ -20,7 +20,7 @@ ScrubberView.prototype.makeAccessors = function () {
     if (_value === undefined) return value;
     value = _value;
     this.redraw();
-    this.onValueUpdated(_value);
+    this.onValueChanged(_value);
     return this;
   };
   
