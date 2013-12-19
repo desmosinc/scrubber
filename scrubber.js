@@ -18,6 +18,7 @@ ScrubberView.prototype.makeAccessors = function () {
   
   this.value = function (_value) {
     if (_value === undefined) return value;
+    if (value === _value) return this;
     value = _value;
     this.redraw();
     this.onValueChanged(_value);
@@ -26,6 +27,7 @@ ScrubberView.prototype.makeAccessors = function () {
   
   this.min = function (_min) {
     if (_min === undefined) return min;
+    if (min === _min) return this;
     min = _min;
     this.redraw();
     return this;
@@ -33,6 +35,7 @@ ScrubberView.prototype.makeAccessors = function () {
   
   this.max = function (_max) {
     if (_max === undefined) return max;
+    if (max === _max) return this;
     max = _max;
     this.redraw();
     return this;
