@@ -11,9 +11,6 @@ Tested in recent versions of Firefox, Chrome, Safari, and IE9+. Works with mouse
 var scrubber = new ScrubberView();
 // Append it to the dom
 document.body.appendChild(scrubber.elt);
-// Call after appending the scrubber to notify it
-// that its width has changed.
-scrubber.resize();
 
 // onValueChanged is called whenever the scrubber is moved.
 scrubber.onValueChanged = function (value} {

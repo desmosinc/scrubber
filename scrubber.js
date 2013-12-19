@@ -5,17 +5,11 @@ function ScrubberView() {
   this.onValueChanged = function () {};
 }
 
-ScrubberView.prototype.resize = function () {
-  this.width = this.elt.offsetWidth;
-  this.left = this.elt.offsetLeft;
-  this.redraw();
-};
-
 ScrubberView.prototype.makeAccessors = function () {
   var value = 0;
   var min = 0;
   var max = 1;
-  
+
   this.value = function (_value) {
     if (_value === undefined) return value;
     if (value === _value) return this;
@@ -24,7 +18,7 @@ ScrubberView.prototype.makeAccessors = function () {
     this.onValueChanged(_value);
     return this;
   };
-  
+
   this.min = function (_min) {
     if (_min === undefined) return min;
     if (min === _min) return this;
@@ -32,7 +26,7 @@ ScrubberView.prototype.makeAccessors = function () {
     this.redraw();
     return this;
   };
-  
+
   this.max = function (_max) {
     if (_max === undefined) return max;
     if (max === _max) return this;
@@ -46,73 +40,70 @@ ScrubberView.prototype.createDOM = function () {
   this.elt = document.createElement('div');
   this.track = document.createElement('div');
   this.thumb = document.createElement('div');
-  
+
   this.elt.className = 'scrubber';
   this.track.className = 'track';
   this.thumb.className = 'thumb';
-  
+
   this.elt.appendChild(this.track);
   this.elt.appendChild(this.thumb);
 };
 
 ScrubberView.prototype.redraw = function () {
-  
   var frac = this.value()/(this.max() - this.min());
-  
-  var translateString = "translateX(" + Math.max(0, Math.min(1, frac))*this.width + "px)";
-  
-  this.thumb.style['-webkit-transform'] = translateString;
-  this.thumb.style['-ms-transform'] = translateString;
-  this.thumb.style.transform = translateString;
-};
-
-ScrubberView.prototype.setValueFromPageX = function (pageX) {
-  var frac = Math.min(1, Math.max((pageX - this.left)/this.width, 0));
-    
-  this.value((1-frac)*this.min() + frac*this.max());
+  this.thumb.style.left = frac*100 + '%';
 };
 
 ScrubberView.prototype.attachListeners = function ()  {
   var self = this;
   var mousedown = false;
-  
+  var cachedLeft;
+  var cachedWidth;
+
   var start = function () {
     mousedown = true;
-    self.resize();
+    cachedLeft = self.elt.offsetLeft;
+    cachedWidth = self.elt.offsetWidth;
   };
-  
+
+  var stop = function () {
+    mousedown = false;
+    cachedLeft = undefined;
+    cachedWidth = undefined;
+  };
+
+  var setValueFromPageX = function (pageX) {
+    var frac = Math.min(1, Math.max((pageX - cachedLeft)/cachedWidth, 0));
+    self.value((1-frac)*self.min() + frac*self.max());
+  };
+
   this.elt.addEventListener('mousedown', start);
   this.elt.addEventListener('touchstart', start);
-  
+
   document.addEventListener('mousemove', function (evt) {
     if (!mousedown) return;
     evt.preventDefault();
-    self.setValueFromPageX(evt.pageX);
+    setValueFromPageX(evt.pageX);
   });
-  
+
   document.addEventListener('touchmove', function (evt) {
     if (!mousedown) return;
     evt.preventDefault();
-    self.setValueFromPageX(evt.changedTouches[0].pageX);
+    setValueFromPageX(evt.changedTouches[0].pageX);
   });
-  
+
   this.elt.addEventListener('mouseup', function (evt) {
     if (!mousedown) return;
     evt.preventDefault();
-    self.setValueFromPageX(evt.pageX);
+    setValueFromPageX(evt.pageX);
   });
-  
+
   this.elt.addEventListener('touchend', function (evt) {
     if (!mousedown) return;
     evt.preventDefault();
-    self.setValueFromPageX(evt.changedTouches[0].pageX);
+    setValueFromPageX(evt.changedTouches[0].pageX);
   });
-  
-  document.addEventListener('mouseup', function () {
-    mousedown = false;
-  });
-  
-  document.addEventListener('touchend', function (evt) {
-    mousedown = false;
-  });
+
+  document.addEventListener('mouseup', stop);
+  document.addEventListener('touchend', stop);
 };
