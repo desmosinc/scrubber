@@ -50,8 +50,6 @@ ScrubberView.prototype.createDOM = function () {
 };
 
 ScrubberView.prototype.redraw = function () {
-  // var frac = this.value()/(this.max() - this.min());  I don't think this gives the right fraction
-  // For example, if you had min: 5, max: 15, value: 10, this would give you 100%, but should be 50%.
   var frac = (this.value() - this.min())/(this.max() - this.min());
   this.thumb.style.left = frac*100 + '%';
 };
