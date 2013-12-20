@@ -9,21 +9,21 @@ ScrubberView.prototype.makeAccessors = function () {
   var value = 0;
   var min = 0;
   var max = 1;
-	var step = 0;
+  var step = 0;
 
   this.value = function (_value) {
     if (_value === undefined) return value;
     if (value === _value) return this;
 
-		if (step > 0) {
-			var remainder = (_value - min) % step;
-			value = _value - remainder;
-			if (Math.abs(remainder) * 2 >= step) {
-				value += (remainder > 0) ? step : (-step);
-			}
-		} else {
-			value = _value;
-		}
+    if (step > 0) {
+      var remainder = (_value - min) % step;
+      value = _value - remainder;
+      if (Math.abs(remainder) * 2 >= step) {
+        value += (remainder > 0) ? step : (-step);
+      }
+    } else {
+      value = _value;
+    }
 
     this.redraw();
     this.onValueChanged(value);
