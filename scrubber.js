@@ -18,11 +18,16 @@ ScrubberView.prototype.makeAccessors = function () {
     _value = Math.max(min, Math.min(max, _value));
 
     if (step > 0) {
-      var remainder = (_value - min) % step;
-      value = _value - remainder;
-      if (Math.abs(remainder) * 2 >= step) {
-        value += (remainder > 0) ? step : (-step);
+      var nsteps = Math.round((_value - min)/step);
+      
+      var invStep = 1/step;
+      if (invStep === Math.round(invStep)) {
+        _value = (min*invStep + nsteps)/invStep;
+      } else {
+        _value = (min/step + nsteps)*step;
       }
+      
+      value = Math.max(min, Math.min(max, _value));
     } else {
       value = _value;
     }
