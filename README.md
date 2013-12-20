@@ -37,4 +37,4 @@ $('.my-container').append(scrubber2.elt);
 scrubber2.elt.style.width = "300px";
 ```
 
-Live example at http://jsbin.com/iyexuVAR/5/
+Live example at http://jsbin.com/iyexuVAR/8/
