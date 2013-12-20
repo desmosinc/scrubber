@@ -85,16 +85,14 @@ ScrubberView.prototype.attachListeners = function ()  {
     mousedown = true;
     cachedLeft = self.elt.offsetLeft;
     cachedWidth = self.elt.offsetWidth;
-		self.thumb.style.opacity = 1;
-		self.thumb.style.borderWidth = 0;
+    self.thumb.className +=  ' dragging';
   };
 
   var stop = function () {
     mousedown = false;
     cachedLeft = undefined;
     cachedWidth = undefined;
-		self.thumb.style.opacity = 0.7;
-		self.thumb.style.borderWidth = '8px';
+    self.thumb.className = 'thumb';
   };
 
   var setValueFromPageX = function (pageX) {
@@ -132,3 +130,4 @@ ScrubberView.prototype.attachListeners = function ()  {
   document.addEventListener('mouseup', stop);
   document.addEventListener('touchend', stop);
 };
+
