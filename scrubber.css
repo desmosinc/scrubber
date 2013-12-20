@@ -34,7 +34,7 @@
     transition: border-width 0.2s ease 0s;
 }
 
-.scrubber .thumb:hover, .scribber .thumb.dragging {
+.scrubber .thumb:hover, .scrubber .thumb.dragging {
   border-width: 0px;
   opacity: 1;
 }
