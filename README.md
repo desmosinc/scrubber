@@ -17,16 +17,18 @@ scrubber.onValueChanged = function (value} {
   console.log(value);
 }
 
-// You can read and update the scrubber's min, max, and value using accessor functions
+// You can read and update the scrubber's min, max, step and value using
+// accessor functions
 scrubber.min();// 0
 scrubber.max(); // 1
+scrubber.step(); // 0
 scrubber.value(); // 0
 
 scruber.value(0.5); // Updates the scrubber's value
 scrubber.value(); // 0.5
 
 // Setters are chainable
-scrubber.min(-10).max(10).value(3);
+scrubber.min(-10).max(10).step(.5).value(3);
 
 // jQuery isn't required, but you can use it to append scrubbers after you've
 // created them if you want
