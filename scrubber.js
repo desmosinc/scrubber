@@ -46,15 +46,13 @@ ScrubberView.prototype.makeAccessors = function () {
     return this;
   };
 
-	this.step = function (_step) {
-		if (_step === undefined) return step;
-		if (step === _step) return this;
-		step = _step;
-		this.redraw();
-		return this;
-	};
-
-
+  this.step = function (_step) {
+    if (_step === undefined) return step;
+    if (step === _step) return this;
+    step = _step;
+    this.redraw();
+    return this;
+  };
 };
 
 ScrubberView.prototype.createDOM = function () {
