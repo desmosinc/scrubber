@@ -9,13 +9,24 @@ ScrubberView.prototype.makeAccessors = function () {
   var value = 0;
   var min = 0;
   var max = 1;
+	var step = 0;
 
   this.value = function (_value) {
     if (_value === undefined) return value;
     if (value === _value) return this;
-    value = _value;
+
+		if (step > 0) {
+			var remainder = (_value - min) % step;
+			value = _value - remainder;
+			if (Math.abs(remainder) * 2 >= step) {
+				value += (remainder > 0) ? step : (-step);
+			}
+		} else {
+			value = _value;
+		}
+
     this.redraw();
-    this.onValueChanged(_value);
+    this.onValueChanged(value);
     return this;
   };
 
@@ -34,6 +45,16 @@ ScrubberView.prototype.makeAccessors = function () {
     this.redraw();
     return this;
   };
+
+	this.step = function (_step) {
+		if (_step === undefined) return step;
+		if (step === _step) return this;
+		step = _step;
+		this.redraw();
+		return this;
+	};
+
+
 };
 
 ScrubberView.prototype.createDOM = function () {
@@ -64,12 +85,16 @@ ScrubberView.prototype.attachListeners = function ()  {
     mousedown = true;
     cachedLeft = self.elt.offsetLeft;
     cachedWidth = self.elt.offsetWidth;
+		self.thumb.style.opacity = 1;
+		self.thumb.style.borderWidth = 0;
   };
 
   var stop = function () {
     mousedown = false;
     cachedLeft = undefined;
     cachedWidth = undefined;
+		self.thumb.style.opacity = 0.7;
+		self.thumb.style.borderWidth = '8px';
   };
 
   var setValueFromPageX = function (pageX) {
