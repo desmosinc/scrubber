@@ -15,6 +15,8 @@ ScrubberView.prototype.makeAccessors = function () {
     if (_value === undefined) return value;
     if (value === _value) return this;
 
+    _value = Math.max(min, Math.min(max, _value));
+
     if (step > 0) {
       var remainder = (_value - min) % step;
       value = _value - remainder;
