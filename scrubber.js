@@ -10,7 +10,7 @@ ScrubberView.prototype.makeAccessors = function () {
   var min = 0;
   var max = 1;
   var step = 0;
-	var orientation = 'horizontal';
+  var orientation = 'horizontal';
 
   this.value = function (_value) {
     if (_value === undefined) return value;
@@ -62,13 +62,13 @@ ScrubberView.prototype.makeAccessors = function () {
     return this;
   };
 
-	this.orientation = function(_orientation) {
-		if (_orientation === undefined) return orientation;
-		if (_orientation === orientation) return this;
-		orientation = _orientation;
-		this.redraw();
-		return this;
-	};
+  this.orientation = function(_orientation) {
+    if (_orientation === undefined) return orientation;
+    if (_orientation === orientation) return this;
+    orientation = _orientation;
+    this.redraw();
+    return this;
+  };
 };
 
 ScrubberView.prototype.createDOM = function () {
@@ -86,16 +86,16 @@ ScrubberView.prototype.createDOM = function () {
 
 ScrubberView.prototype.redraw = function () {
   var frac = (this.value() - this.min())/(this.max() - this.min());
-	if (this.orientation() === 'horizontal') {
-		this.elt.className = 'scrubber';
-		this.thumb.style.top = '50%';
-		this.thumb.style.left = frac*100 + '%';
-	}
-	else {
-		this.elt.className = 'scrubber-vert';
-		this.thumb.style.left = '50%';
-		this.thumb.style.top = 100 - (frac*100) + '%';
-	}
+  if (this.orientation() === 'horizontal') {
+    this.elt.className = 'scrubber';
+    this.thumb.style.top = '50%';
+    this.thumb.style.left = frac*100 + '%';
+  }
+  else {
+    this.elt.className = 'scrubber-vert';
+    this.thumb.style.left = '50%';
+    this.thumb.style.top = 100 - (frac*100) + '%';
+  }
 };
 
 ScrubberView.prototype.attachListeners = function ()  {
@@ -103,15 +103,15 @@ ScrubberView.prototype.attachListeners = function ()  {
   var mousedown = false;
   var cachedLeft;
   var cachedWidth;
-	var cachedTop;
-	var cachedHeight;
+  var cachedTop;
+  var cachedHeight;
 
   var start = function () {
     mousedown = true;
     cachedLeft = self.elt.offsetLeft;
     cachedWidth = self.elt.offsetWidth;
-		cachedTop = self.elt.offsetTop;
-		cachedHeight= self.elt.offsetHeight;
+    cachedTop = self.elt.offsetTop;
+    cachedHeight= self.elt.offsetHeight;
     self.thumb.className +=  ' dragging';
   };
 
@@ -119,8 +119,8 @@ ScrubberView.prototype.attachListeners = function ()  {
     mousedown = false;
     cachedLeft = undefined;
     cachedWidth = undefined;
-		cachedTop = undefined;
-		cachedHeight = undefined;
+    cachedTop = undefined;
+    cachedHeight = undefined;
     self.thumb.className = 'thumb';
   };
 
@@ -140,37 +140,37 @@ ScrubberView.prototype.attachListeners = function ()  {
   document.addEventListener('mousemove', function (evt) {
     if (!mousedown) return;
     evt.preventDefault();
-		if (self.orientation() === 'horizontal')
-			setValueFromPageX(evt.pageX);
-		else
-			setValueFromPageY(evt.pageY);
+    if (self.orientation() === 'horizontal')
+      setValueFromPageX(evt.pageX);
+    else
+      setValueFromPageY(evt.pageY);
   });
 
   document.addEventListener('touchmove', function (evt) {
     if (!mousedown) return;
     evt.preventDefault();
-		if (self.orientation() === 'horizontal')
-			setValueFromPageX(evt.changedTouches[0].pageX);
-		else
-			setValueFromPageY(evt.changedTouches[0].pageY);
+    if (self.orientation() === 'horizontal')
+      setValueFromPageX(evt.changedTouches[0].pageX);
+    else
+      setValueFromPageY(evt.changedTouches[0].pageY);
   });
 
   this.elt.addEventListener('mouseup', function (evt) {
     if (!mousedown) return;
     evt.preventDefault();
-		if (self.orientation() === 'horizontal')
-			setValueFromPageX(evt.pageX);
-		else
-			setValueFromPageY(evt.pageY);
+    if (self.orientation() === 'horizontal')
+      setValueFromPageX(evt.pageX);
+    else
+      setValueFromPageY(evt.pageY);
   });
 
   this.elt.addEventListener('touchend', function (evt) {
     if (!mousedown) return;
     evt.preventDefault();
-		if (self.orientation() === 'horizontal')
-			setValueFromPageX(evt.changedTouches[0].pageX);
-		else
-		  setValueFromPageY(evt.changedTouches[0].pageY);
+    if (self.orientation() === 'horizontal')
+      setValueFromPageX(evt.changedTouches[0].pageX);
+    else
+      setValueFromPageY(evt.changedTouches[0].pageY);
   });
 
   document.addEventListener('mouseup', stop);
