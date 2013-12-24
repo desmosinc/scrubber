@@ -5,6 +5,13 @@
     position: relative;
 }
 
+.scrubber-vert {
+	margin-left: 10px;
+	width: 40px;
+	height: 200px;
+	position: relative;
+}
+
 .scrubber .track {
     position: absolute;
     top: 50%;
@@ -14,6 +21,17 @@
     background: #DDD;
     border-radius: 3px;
     margin-top: -3px;
+}
+
+.scrubber-vert .track {
+	position: absolute;
+	top: 0px;	
+	height: 100%;
+	left: 50%;
+	width: 6px;
+	background: #DDD;
+	border-radius: 3px;
+	margin-left: -3px;
 }
 
 .scrubber .thumb {
@@ -34,7 +52,28 @@
     transition: border-width 0.2s ease 0s;
 }
 
-.scrubber .thumb:hover, .scrubber .thumb.dragging {
+.scrubber-vert .thumb {
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	width: 22px;
+	height: 22px;
+	margin-bottom: -11px;
+	margin-left: -11px;
+	cursor: pointer;
+	opacity: 0.7;
+	border: 8px solid #BECFE4;
+	border-radius: 100%;
+	background: #4F81BD;
+	transition: border-width 0.2s ease 0s;
+}
+
+.scrubber .thumb:hover,
+.scrubber-vert .thumb:hover,
+.thumb.dragging {
   border-width: 0px;
   opacity: 1;
 }
+
