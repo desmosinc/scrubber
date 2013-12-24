@@ -13,22 +13,23 @@ var scrubber = new ScrubberView();
 document.body.appendChild(scrubber.elt);
 
 // onValueChanged is called whenever the scrubber is moved.
-scrubber.onValueChanged = function (value} {
+scrubber.onValueChanged = function (value) {
   console.log(value);
 }
 
-// You can read and update the scrubber's min, max, step and value using
-// accessor functions
+// You can read and update the scrubber's min, max, step, value, and orientation
+// using accessor functions
 scrubber.min();// 0
 scrubber.max(); // 1
 scrubber.step(); // 0
 scrubber.value(); // 0
+scrubber.orientation(); // 'horizontal'
 
 scruber.value(0.5); // Updates the scrubber's value
 scrubber.value(); // 0.5
 
 // Setters are chainable
-scrubber.min(-10).max(10).step(.5).value(3);
+scrubber.min(-10).max(10).step(.5).value(3).orientation('vertical');
 
 // jQuery isn't required, but you can use it to append scrubbers after you've
 // created them if you want
