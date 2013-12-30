@@ -106,11 +106,22 @@ ScrubberView.prototype.attachListeners = function ()  {
   var cachedTop;
   var cachedHeight;
 
+  function totalOffset(obj) {
+    var currLeft = currTop = 0;
+    if (obj.offsetParent) {
+      do {
+        currLeft += obj.offsetLeft;
+        currTop += obj.offsetTop;
+      } while (obj = obj.offsetParent);
+    }
+    return [currLeft, currTop];
+  }
+
   var start = function () {
     mousedown = true;
-    cachedLeft = self.elt.offsetLeft;
+    cachedLeft = totalOffset(self.elt)[0];
     cachedWidth = self.elt.offsetWidth;
-    cachedTop = self.elt.offsetTop;
+    cachedTop = totalOffset(self.elt)[1];
     cachedHeight= self.elt.offsetHeight;
     self.thumb.className +=  ' dragging';
   };
