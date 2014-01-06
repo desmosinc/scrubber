@@ -108,10 +108,12 @@ ScrubberView.prototype.attachListeners = function ()  {
 
   var start = function () {
     mousedown = true;
-    cachedLeft = self.elt.offsetLeft;
-    cachedWidth = self.elt.offsetWidth;
-    cachedTop = self.elt.offsetTop;
-    cachedHeight= self.elt.offsetHeight;
+    var rect = self.elt.getBoundingClientRect();
+
+    cachedLeft = rect.left;
+    cachedWidth = rect.width || self.elt.offsetWidth;
+    cachedTop = rect.top;
+    cachedHeight = rect.height || self.elt.offsetHeight;
     self.thumb.className +=  ' dragging';
   };
 
