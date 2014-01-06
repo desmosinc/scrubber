@@ -109,11 +109,18 @@ ScrubberView.prototype.attachListeners = function ()  {
   var start = function () {
     mousedown = true;
     var rect = self.elt.getBoundingClientRect();
+    // NOTE: page[X|Y]Offset and the width and height
+    // properties of getBoundingClientRect are not
+    // supported in IE8 and below.
+    //
+    // Scrubber doesn't attempt to support IE<9.
+    var xOffset = window.pageXOffset;
+    var yOffset = window.pageYOffset;
 
-    cachedLeft = rect.left;
-    cachedWidth = rect.width || self.elt.offsetWidth;
-    cachedTop = rect.top;
-    cachedHeight = rect.height || self.elt.offsetHeight;
+    cachedLeft = rect.left + xOffset;
+    cachedWidth = rect.width;
+    cachedTop = rect.top + yOffset;
+    cachedHeight = rect.height;
     self.thumb.className +=  ' dragging';
   };
 
