@@ -245,7 +245,7 @@ ScrubberView.prototype.play = function() {
   var tick = function() {
     if (self.animating) {
       var elapsed = new Date().getTime() - startTime;
-      self.value((elapsed/duration)*sliderRange + value);
+      self.value((elapsed/remainingDuration)*remainingRange + value);
       if (self.value() === max) self.animating = false;
       requestAnimationFrame(tick);
     }
