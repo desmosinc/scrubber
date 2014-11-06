@@ -17,13 +17,14 @@ scrubber.onValueChanged = function (value) {
   console.log(value);
 }
 
-// You can read and update the scrubber's min, max, step, value, and orientation
+// You can read and update the scrubber's min, max, step, value, orientation, and animation duration
 // using accessor functions
 scrubber.min();// 0
 scrubber.max(); // 1
 scrubber.step(); // 0
 scrubber.value(); // 0
 scrubber.orientation(); // 'horizontal'
+scrubber.duration(); // 2000 (ms)
 
 scruber.value(0.5); // Updates the scrubber's value
 scrubber.value(); // 0.5
@@ -38,6 +39,10 @@ $('.my-container').append(scrubber2.elt);
 
 // By default, scrubbers are 200px wide. You can use css to change their size
 scrubber2.elt.style.width = "300px";
+
+// Scrubbers support two animation methods
+scrubber.play();  // Starts or resumes animation. Restarts if value() is equal to max().
+scrubber.pause();
 ```
 
-Live example at http://jsbin.com/iyexuVAR/8/
+Live example at http://jsbin.com/hefolu/3/
