@@ -45,4 +45,4 @@ scrubber.play();  // Starts or resumes animation. Restarts if value() is equal t
 scrubber.pause();
 ```
 
-Live example at http://jsbin.com/hefolu/
+Live example at http://jsbin.com/hefolu/3/
