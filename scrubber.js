@@ -1,8 +1,40 @@
+// requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+// MIT license
+ 
+(function() {
+  var lastTime = 0;
+  var vendors = ['ms', 'moz', 'webkit', 'o'];
+  for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+    window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+    window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+    || window[vendors[x]+'CancelRequestAnimationFrame'];
+  }
+
+  if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function(callback, element) {
+      var currTime = new Date().getTime();
+      var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+      var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+      timeToCall);
+      lastTime = currTime + timeToCall;
+      return id;
+    };
+  }
+
+  if (!window.cancelAnimationFrame) {
+    window.cancelAnimationFrame = function(id) {
+    clearTimeout(id);
+    };
+  }
+
+}());
+
 function ScrubberView() {
   this.makeAccessors();
   this.createDOM();
   this.attachListeners();
   this.onValueChanged = function () {};
+  this.animating = false;
 }
 
 ScrubberView.prototype.makeAccessors = function () {
@@ -11,6 +43,7 @@ ScrubberView.prototype.makeAccessors = function () {
   var max = 1;
   var step = 0;
   var orientation = 'horizontal';
+  var duration = 2000;
 
   this.value = function (_value) {
     if (_value === undefined) return value;
@@ -67,6 +100,13 @@ ScrubberView.prototype.makeAccessors = function () {
     if (_orientation === orientation) return this;
     orientation = _orientation;
     this.redraw();
+    return this;
+  };
+
+  this.duration = function(_duration) {
+    if (_duration === undefined) return duration;
+    if (_duration === duration) return this;
+    duration = _duration;
     return this;
   };
 };
@@ -184,4 +224,34 @@ ScrubberView.prototype.attachListeners = function ()  {
 
   document.addEventListener('mouseup', stop);
   document.addEventListener('touchend', stop);
+
+};
+
+ScrubberView.prototype.play = function() {
+  var self = this;
+  this.animating = true;
+  var duration = this.duration();
+  var max = this.max();
+  var min = this.min();
+  var value = this.value();
+  if (value === max) {
+    this.value(min);
+    value = min;
+  }
+  var sliderRange = max - min;
+  var remainingRange = max - value;
+  var remainingDuration = (remainingRange/sliderRange)*duration;
+  var startTime = new Date().getTime();
+  var tick = function() {
+    if (self.animating) {
+      var elapsed = new Date().getTime() - startTime;
+      self.value((elapsed/duration)*sliderRange + value);
+      requestAnimationFrame(tick);
+    }
+  };
+  tick();
+};
+
+ScrubberView.prototype.pause = function() {
+  this.animating = false;
 };
