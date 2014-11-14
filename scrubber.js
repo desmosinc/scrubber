@@ -20,14 +20,14 @@ ScrubberView.prototype.makeAccessors = function () {
 
     if (step > 0) {
       var nsteps = Math.round((_value - min)/step);
-      
+
       var invStep = 1/step;
       if (invStep === Math.round(invStep)) {
         _value = (min*invStep + nsteps)/invStep;
       } else {
         _value = (min/step + nsteps)*step;
       }
-      
+
       value = Math.max(min, Math.min(max, _value));
     } else {
       value = _value;
@@ -106,7 +106,9 @@ ScrubberView.prototype.attachListeners = function ()  {
   var cachedTop;
   var cachedHeight;
 
-  var start = function () {
+  var start = function (evt) {
+    evt.preventDefault();
+
     mousedown = true;
     var rect = self.elt.getBoundingClientRect();
     // NOTE: page[X|Y]Offset and the width and height
