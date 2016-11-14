@@ -3,6 +3,8 @@ function ScrubberView() {
   this.createDOM();
   this.attachListeners();
   this.onValueChanged = function () {};
+  this.onScrubStart = function () {};
+  this.onScrubEnd = function () {};
 }
 
 ScrubberView.prototype.makeAccessors = function () {
@@ -108,6 +110,7 @@ ScrubberView.prototype.attachListeners = function ()  {
 
   var start = function (evt) {
     evt.preventDefault();
+    self.onScrubStart(self.value());
 
     mousedown = true;
     var rect = self.elt.getBoundingClientRect();
@@ -133,6 +136,7 @@ ScrubberView.prototype.attachListeners = function ()  {
     cachedTop = undefined;
     cachedHeight = undefined;
     self.thumb.className = 'thumb';
+    self.onScrubEnd(self.value());
   };
 
   var setValueFromPageX = function (pageX) {
