@@ -1,3 +1,14 @@
+var Keys = {
+  LEFT: 37,
+  RIGHT: 39,
+  DOWN: 40,
+  UP: 38,
+  PAGEDOWN: 34,
+  PAGEUP: 33,
+  HOME: 36,
+  END: 35
+};
+
 function ScrubberView() {
   this.makeAccessors();
   this.createDOM();
@@ -13,6 +24,7 @@ ScrubberView.prototype.makeAccessors = function () {
   var max = 1;
   var step = 0;
   var orientation = 'horizontal';
+  var ariaLabel = 'slider';
 
   this.value = function (_value) {
     if (_value === undefined) return value;
@@ -37,6 +49,7 @@ ScrubberView.prototype.makeAccessors = function () {
 
     this.redraw();
     this.onValueChanged(value);
+    this.thumb.setAttribute('aria-valuenow', value);
     return this;
   };
 
@@ -45,6 +58,7 @@ ScrubberView.prototype.makeAccessors = function () {
     if (min === _min) return this;
     min = _min;
     this.redraw();
+    this.thumb.setAttribute('aria-valuemin', min);
     return this;
   };
 
@@ -53,6 +67,7 @@ ScrubberView.prototype.makeAccessors = function () {
     if (max === _max) return this;
     max = _max;
     this.redraw();
+    this.thumb.setAttribute('aria-valuemax', max);
     return this;
   };
 
@@ -71,12 +86,27 @@ ScrubberView.prototype.makeAccessors = function () {
     this.redraw();
     return this;
   };
+
+  this.ariaLabel = function(_ariaLabel) {
+    if (_ariaLabel === undefined) return ariaLabel;
+    if (_ariaLabel === ariaLabel) return this;
+    ariaLabel = _ariaLabel;
+    this.thumb.setAttribute('aria-label', ariaLabel);
+    return this;
+  };
 };
 
 ScrubberView.prototype.createDOM = function () {
   this.elt = document.createElement('div');
   this.track = document.createElement('div');
   this.thumb = document.createElement('div');
+
+  this.thumb.tabIndex = 0;
+  this.thumb.setAttribute('role', 'slider');
+  this.thumb.setAttribute('aria-label', this.ariaLabel());
+  this.thumb.setAttribute('aria-valuenow', this.value());
+  this.thumb.setAttribute('aria-valuemin', this.min());
+  this.thumb.setAttribute('aria-valuemax', this.max());
 
   this.elt.className = this.orientation() === 'horizontal' ? 'scrubber' : 'scrubber-vert';
   this.track.className = 'track';
@@ -149,8 +179,58 @@ ScrubberView.prototype.attachListeners = function ()  {
     self.value((1-frac)*self.min() + frac*self.max());
   };
 
+  // If the step is 0, we'd still like to be able to change the slider with
+  // the keyboard, so figure out what step would correspond to 1px of movement.
+  var getDefactoStep = function() {
+    var rawStep = self.step();
+    if (rawStep > 0) return rawStep;
+    var w = self.elt.getBoundingClientRect().width;
+    return (self.max() - self.min()) / w;
+  };
+
+  var increment = function() {
+    var keyStep = getDefactoStep();
+    self.value(self.value() + keyStep);
+  };
+
+  var decrement = function() {
+    var keyStep = getDefactoStep();
+    self.value(self.value() - keyStep);
+  };
+
+  var toMin = function() {
+    self.value(self.min());
+  };
+
+  var toMax = function() {
+    self.value(self.max());
+  };
+
   this.elt.addEventListener('mousedown', start);
   this.elt.addEventListener('touchstart', start);
+
+  this.thumb.addEventListener('keydown', function(evt) {
+    switch (evt.which) {
+      case Keys.LEFT:
+      case Keys.DOWN:
+        decrement();
+        break;
+      case Keys.RIGHT:
+      case Keys.UP:
+        increment();
+        break;
+      case Keys.PAGEUP:
+      case Keys.HOME:
+        toMin();
+        break;
+      case Keys.PAGEDOWN:
+      case Keys.END:
+        toMax();
+        break;
+      default:
+        return;
+    }
+  });
 
   document.addEventListener('mousemove', function (evt) {
     if (!mousedown) return;
