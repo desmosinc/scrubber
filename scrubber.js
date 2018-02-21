@@ -111,7 +111,10 @@ ScrubberView.prototype.attachListeners = function ()  {
   var start = function (evt) {
     evt.preventDefault();
     self.onScrubStart(self.value());
-
+    
+    document.addEventListener('mouseup', stop);
+    document.addEventListener('touchend', stop);
+    
     mousedown = true;
     var rect = self.elt.getBoundingClientRect();
     // NOTE: page[X|Y]Offset and the width and height
@@ -130,6 +133,8 @@ ScrubberView.prototype.attachListeners = function ()  {
   };
 
   var stop = function () {
+    document.removeEventListener('mouseup', stop, true);
+    document.removeEventListener('touchend', stop, true);
     mousedown = false;
     cachedLeft = undefined;
     cachedWidth = undefined;
@@ -187,7 +192,4 @@ ScrubberView.prototype.attachListeners = function ()  {
     else
       setValueFromPageY(evt.changedTouches[0].pageY);
   });
-
-  document.addEventListener('mouseup', stop);
-  document.addEventListener('touchend', stop);
 };
