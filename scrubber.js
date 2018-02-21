@@ -133,8 +133,8 @@ ScrubberView.prototype.attachListeners = function ()  {
   };
 
   var stop = function () {
-    document.removeEventListener('mouseup', stop, true);
-    document.removeEventListener('touchend', stop, true);
+    document.removeEventListener('mouseup', stop);
+    document.removeEventListener('touchend', stop);
     mousedown = false;
     cachedLeft = undefined;
     cachedWidth = undefined;
